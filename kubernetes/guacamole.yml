@@ -35,6 +35,12 @@ spec:
       - name: guacamole
         image: sergeyfilyanin/guacamole:pg
         env:
+        - name: HOME
+          value: /opt
+        - name: GUACD_HOST
+          value: guacd
+        - name: GUACD_PORT
+          value: '4822'
         - name: GUACAMOLE_HOME
           value: /opt/guacamole
         - name: GUACAMOLE_PROPERTIES

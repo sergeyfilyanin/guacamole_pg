@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: guacamole
-        image: sergeyfilyanin/guacamole:work
+        image: sergeyfilyanin/guacamole:pg
         env:
         - name: GUACAMOLE_HOME
           value: /opt/guacamole

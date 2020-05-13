@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: guacd
+  labels:
+    app: guacd
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guacd
+  labels:
+    app: guacd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: guacd
+  template:
+    metadata:
+      labels:
+        name: guacd
+    spec:
+      containers:
+      - name: guacd
+        image: guacamole/guacd
+        resources:
+          requests:
+            memory: "400Mi"
+            cpu: "200m"

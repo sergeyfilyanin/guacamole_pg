@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: guacamole
+  labels:
+    app: guacamole
+spec:
+  type: NodePort
+  ports:
+    - name: guacamole
+      port: 8080
+      targetPort: 8080
+      nodePort: 33333
+  selector:
+    name: guacamole
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guacamole
+  labels:
+    app: guacamole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: guacamole
+  template:
+    metadata:
+      labels:
+        name: guacamole
+    spec:
+      containers:
+      - name: guacamole
+        image: sergeyfilyanin/guacamole:work
+        env:
+        - name: GUACAMOLE_HOME
+          value: /opt/guacamole
+        - name: GUACAMOLE_PROPERTIES
+          value: /opt/guacamole/guacamole.properties
+        - name: GUACAMOLE_LIB
+          value: /opt/guacamole/lib
+        resources:
+          requests:
+            memory: "400Mi"
+            cpu: "200m"

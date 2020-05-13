@@ -1,0 +1,46 @@
+version: '3.8'
+
+# networks
+# create a network 'guacnetwork_compose' in mode 'bridged'
+networks:
+  guacnetwork_compose:
+    driver: bridge
+
+# services
+services:
+  # guacd
+  guacd:
+    container_name: guacd_compose
+    image: guacamole/guacd
+    networks:
+      guacnetwork_compose:
+    restart: always
+#    volumes:
+#    - ./drive:/drive:rw
+#    - ./record:/record:rw
+    networks:
+      guacnetwork_compose:
+    restart: always
+#    volumes:
+#    - ./init:/docker-entrypoint-initdb.d:ro
+
+  # guacamole
+  guacamole:
+    container_name: guacamole_compose
+    depends_on:
+    - guacd
+    environment:
+      GUACD_HOSTNAME: guacd
+      HOME: /opt
+      GUACAMOLE_HOME: /opt/guacamole
+      GUACAMOLE_PROPERTIES: /opt/guacamole/guacamole.properties
+      GUACAMOLE_LIB: /opt/guacamole/lib
+      LOGBACK_LEVEL: debug
+    image: sergeyfilyanin/guacamole:work
+    links:
+    - guacd
+    networks:
+      guacnetwork_compose:
+    ports:
+    - 4445:8080/tcp
+    restart: always
